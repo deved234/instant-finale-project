@@ -1,12 +1,18 @@
 import { Link } from "react-router-dom";
 import { Heart } from "lucide-react";
-import { useState } from "react";
 import useCartStore from "../../store/cartStore";
+import useWishlistStore from "../../store/wishlistStore";
 
 const ProductCard = ({ product }) => {
-  const [wished, setWished] = useState(false);
   const addItem = useCartStore((state) => state.addItem);
-
+  const {
+    addItem: addToWishlist,
+    removeItem: removeFromWishlist,
+    items: wishlistItems,
+  } = useWishlistStore();
+const wished = wishlistItems.some(
+  (item) => String(item.id) === String(product.id),
+);
   return (
     <div className="group relative">
       {/* Image */}
@@ -19,7 +25,9 @@ const ProductCard = ({ product }) => {
 
         {/* Wishlist */}
         <button
-          onClick={() => setWished(!wished)}
+          onClick={() =>
+            wished ? removeFromWishlist(product.id) : addToWishlist(product)
+          }
           className="absolute top-3 right-3 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm hover:scale-110 transition-transform"
         >
           <Heart

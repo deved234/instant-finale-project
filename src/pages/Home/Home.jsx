@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
-import axios from "axios";
 import ProductCard from "../../components/ui/ProductCard";
+import { useProducts } from "../../hooks/useProducts";
+
 
 const categories = [
   "All",
@@ -16,17 +16,7 @@ const categories = [
 const Home = () => {
   const [activeCategory, setActiveCategory] = useState("All");
 
-  const {
-    data: products,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ["products"],
-    queryFn: () =>
-      axios
-        .get("https://6a1f9defe96c1d13b5860ddd.mockapi.io/products")
-        .then((res) => res.data),
-  });
+  const { data: products, isLoading, isError } = useProducts();
 
   const filtered =
     activeCategory === "All"

@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
 import { ShieldCheck, Truck, Minus, Plus } from "lucide-react";
-import axios from "axios";
 import useCartStore from "../../store/cartStore";
+import { useProduct } from "../../hooks/useProducts";
 
 const Product = () => {
   const { id } = useParams();
@@ -12,17 +11,7 @@ const Product = () => {
   const [quantity, setQuantity] = useState(1);
   const [activeImg, setActiveImg] = useState(0);
 
-  const {
-    data: product,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ["product", id],
-    queryFn: () =>
-      axios
-        .get(`https://6a1f9defe96c1d13b5860ddd.mockapi.io/products/${id}`)
-        .then((res) => res.data),
-  });
+  const { data: product, isLoading, isError } = useProduct(id);
 
   const handleAddToCart = () => {
     for (let i = 0; i < quantity; i++) {

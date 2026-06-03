@@ -14,8 +14,7 @@ const useWishlistStore = create(
             },
 
             removeItem: (id) =>
-                set({ items: get().items.filter((item) => item.id !== id) }),
-
+                set({ items: get().items.filter((item) => String(item.id) !== String(id)) }),
             isWished: (id) => get().items.some((item) => item.id === id),
 
             clearWishlist: () => set({ items: [] }),

@@ -1,5 +1,7 @@
-import api from './axios'
+import axios from './axios'
 
-export const getProducts = () => api.get('/products')
+export const getProducts = () =>
+    axios.get('/products').then((res) => res.data)
 
-export const getProductById = (id) => api.get(`/products/${id}`)
+export const getProductById = (id) =>
+    axios.get(`/products/${id}`).then((res) => res.data)

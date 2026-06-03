@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import { Search, SlidersHorizontal } from "lucide-react";
-import axios from "axios";
 import ProductCard from "../../components/ui/ProductCard";
+import { useProducts } from "../../hooks/useProducts";
 
 const sortOptions = [
   { label: "Latest", value: "latest" },
@@ -15,17 +14,7 @@ const Shop = () => {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("latest");
 
-  const {
-    data: products,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ["products"],
-    queryFn: () =>
-      axios
-        .get("https://6a1f9defe96c1d13b5860ddd.mockapi.io/products")
-        .then((res) => res.data),
-  });
+  const { data: products, isLoading, isError } = useProducts();
 
   const filtered = products
     ?.filter((p) => p.title.toLowerCase().includes(search.toLowerCase()))
