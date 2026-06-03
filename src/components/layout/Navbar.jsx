@@ -1,10 +1,12 @@
+import { useState } from "react";
 import { Link, useNavigate, NavLink } from "react-router-dom";
-import { ShoppingBag, Search, Heart, User } from "lucide-react";
+import { ShoppingBag, Search, Heart, User, Menu, X } from "lucide-react";
 import useCartStore from "../../store/cartStore";
 import useAuthStore from "../../store/authStore";
 import useWishlistStore from "../../store/wishlistStore";
 
 const Navbar = () => {
+  const [menuOpen, setMenuOpen] = useState(false);
   const totalItems = useCartStore((state) => state.getTotalItems());
   const totalWished = useWishlistStore((state) => state.getTotalItems());
   const { isAuthenticated, logout } = useAuthStore();
@@ -12,6 +14,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     logout();
+    setMenuOpen(false);
     navigate("/login");
   };
 
@@ -88,7 +91,7 @@ const Navbar = () => {
 
           {/* Auth */}
           {isAuthenticated ? (
-            <div className="flex items-center gap-3">
+            <div className="hidden sm:flex items-center gap-3">
               <User className="w-5 h-5 text-gray-600" />
               <button
                 onClick={handleLogout}
@@ -100,13 +103,65 @@ const Navbar = () => {
           ) : (
             <Link
               to="/login"
-              className="text-sm font-semibold text-white bg-blue-700 px-4 py-2 rounded-lg hover:bg-blue-800 transition-colors"
+              className="hidden sm:inline-flex text-sm font-semibold text-white bg-blue-700 px-4 py-2 rounded-lg hover:bg-blue-800 transition-colors"
             >
               Sign In
             </Link>
           )}
+
+          <button
+            onClick={() => setMenuOpen((open) => !open)}
+            aria-label="Toggle menu"
+            className="md:hidden text-gray-600 hover:text-gray-900 transition-colors"
+          >
+            {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
         </div>
       </div>
+
+      {menuOpen && (
+        <div className="md:hidden max-w-7xl mx-auto pt-5">
+          <div className="rounded-2xl border border-gray-100 bg-white p-4 shadow-xl shadow-slate-200/60">
+            <div className="grid gap-2">
+              {navLinks.map((link) => (
+                <NavLink
+                  key={link.to}
+                  to={link.to}
+                  end={link.to === "/"}
+                  onClick={() => setMenuOpen(false)}
+                  className={({ isActive }) =>
+                    `rounded-xl px-4 py-3 text-sm font-medium transition-colors ${
+                      isActive
+                        ? "bg-blue-50 text-blue-700"
+                        : "text-gray-600 hover:bg-gray-50"
+                    }`
+                  }
+                >
+                  {link.label}
+                </NavLink>
+              ))}
+            </div>
+            <div className="mt-4 border-t border-gray-100 pt-4">
+              {isAuthenticated ? (
+                <button
+                  onClick={handleLogout}
+                  className="w-full rounded-xl bg-gray-900 px-4 py-3 text-sm font-semibold text-white"
+                >
+                  Logout
+                </button>
+              ) : (
+                <Link
+                  to="/login"
+                  onClick={() => setMenuOpen(false)}
+                  className="block w-full rounded-xl bg-blue-700 px-4 py-3 text-center text-sm font-semibold text-white"
+                >
+                  Sign In
+                </Link>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </nav>
   );
 };
