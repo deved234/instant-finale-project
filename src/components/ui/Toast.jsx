@@ -7,7 +7,7 @@ const Toast = () => {
   if (!toast) return null;
 
   return (
-    <div className="fixed top-24 right-6 z-[80] max-w-sm rounded-xl border border-gray-100 bg-white px-4 py-3 shadow-2xl shadow-slate-300/40">
+    <div className="fixed top-24 right-6 z-80 max-w-sm rounded-xl border border-gray-100 bg-white px-4 py-3 shadow-2xl shadow-slate-300/40">
       <div className="flex items-center gap-3">
         <CheckCircle
           className={`w-5 h-5 ${

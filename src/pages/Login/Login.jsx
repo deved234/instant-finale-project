@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import useAuthStore from "../../store/authStore";
+import { loginUser, toAuthUser } from "../../api/users";
 
 const validationSchema = Yup.object({
   email: Yup.string()
@@ -16,6 +17,7 @@ const validationSchema = Yup.object({
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [apiError, setApiError] = useState("");
   const { login } = useAuthStore();
   const navigate = useNavigate();
 
@@ -25,9 +27,21 @@ const Login = () => {
       password: "",
     },
     validationSchema,
-    onSubmit: (values) => {
-      login({ email: values.email });
-      navigate("/");
+    onSubmit: async (values, { setSubmitting }) => {
+      setApiError("");
+      try {
+        const user = await loginUser(values);
+        login(toAuthUser(user));
+        navigate("/");
+      } catch (error) {
+        if (error.message === "INVALID_CREDENTIALS") {
+          setApiError("Invalid email or password.");
+        } else {
+          setApiError("Something went wrong. Please try again.");
+        }
+      } finally {
+        setSubmitting(false);
+      }
     },
   });
 
@@ -60,6 +74,12 @@ const Login = () => {
           </p>
 
           <form onSubmit={formik.handleSubmit} className="space-y-4">
+            {apiError && (
+              <p className="text-red-500 text-sm bg-red-50 rounded-lg px-4 py-3">
+                {apiError}
+              </p>
+            )}
+
             {/* Email */}
             <div>
               <input
@@ -122,9 +142,10 @@ const Login = () => {
             {/* Submit */}
             <button
               type="submit"
-              className="w-full bg-blue-700 text-white py-3 rounded-lg text-sm font-semibold hover:bg-blue-800 transition-colors"
+              disabled={formik.isSubmitting}
+              className="w-full bg-blue-700 text-white py-3 rounded-lg text-sm font-semibold hover:bg-blue-800 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              Sign In →
+              {formik.isSubmitting ? "Signing in..." : "Sign In →"}
             </button>
 
             {/* Divider */}

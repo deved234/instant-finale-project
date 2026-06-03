@@ -3,6 +3,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useState } from "react";
 import useAuthStore from "../../store/authStore";
+import { registerUser, toAuthUser } from "../../api/users";
 
 const validationSchema = Yup.object({
   name: Yup.string()
@@ -25,6 +26,7 @@ const validationSchema = Yup.object({
 
 const Register = () => {
   const [showPassword] = useState(false);
+  const [apiError, setApiError] = useState("");
   const { login } = useAuthStore();
   const navigate = useNavigate();
 
@@ -37,9 +39,31 @@ const Register = () => {
       terms: false,
     },
     validationSchema,
-    onSubmit: (values) => {
-      login({ name: values.name, email: values.email });
-      navigate("/");
+    onSubmit: async (values, { setSubmitting }) => {
+      setApiError("");
+      try {
+        const user = await registerUser({
+          name: values.name,
+          email: values.email,
+          password: values.password,
+        });
+        login(toAuthUser(user));
+        navigate("/");
+      } catch (error) {
+        if (error.message === "EMAIL_EXISTS") {
+          setApiError("An account with this email already exists.");
+        } else if (error.response?.data) {
+          const message =
+            typeof error.response.data === "string"
+              ? error.response.data
+              : error.response.data?.message;
+          setApiError(message || "Something went wrong. Please try again.");
+        } else {
+          setApiError("Something went wrong. Please try again.");
+        }
+      } finally {
+        setSubmitting(false);
+      }
     },
   });
 
@@ -74,6 +98,12 @@ const Register = () => {
           </p>
 
           <form onSubmit={formik.handleSubmit} className="space-y-4">
+            {apiError && (
+              <p className="text-red-500 text-sm bg-red-50 rounded-lg px-4 py-3">
+                {apiError}
+              </p>
+            )}
+
             {/* Name */}
             <div>
               <label className="text-xs font-semibold uppercase tracking-widest text-gray-600 mb-1 block">
@@ -167,7 +197,9 @@ const Register = () => {
                   name="terms"
                   id="terms"
                   checked={formik.values.terms}
-                  onChange={formik.handleChange}
+                  onChange={(e) =>
+                    formik.setFieldValue("terms", e.target.checked)
+                  }
                   className="mt-1 accent-blue-700"
                 />
                 <label htmlFor="terms" className="text-sm text-gray-500">
@@ -192,9 +224,10 @@ const Register = () => {
             {/* Submit */}
             <button
               type="submit"
-              className="w-full bg-blue-700 text-white py-3 rounded-lg text-sm font-semibold hover:bg-blue-800 transition-colors"
+              disabled={formik.isSubmitting}
+              className="w-full bg-blue-700 text-white py-3 rounded-lg text-sm font-semibold hover:bg-blue-800 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              Register
+              {formik.isSubmitting ? "Creating account..." : "Register"}
             </button>
 
             {/* Login Link */}
