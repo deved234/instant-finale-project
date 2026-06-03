@@ -46,7 +46,8 @@ const Login = () => {
   });
 
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen flex bg-white dark:bg-slate-950 transition-colors duration-300">
+      {/* Left Side — decorative */}
       <div className="hidden md:flex w-1/2 bg-linear-to-br from-slate-700 via-slate-500 to-amber-700 flex-col justify-end p-12">
         <h2 className="text-white text-4xl font-bold leading-tight mb-4">
           Elevate Your Experience.
@@ -57,25 +58,25 @@ const Login = () => {
         </p>
       </div>
 
-      
-      <div className="w-full md:w-1/2 flex flex-col justify-between p-12">
+      {/* Right Side — form */}
+      <div className="w-full md:w-1/2 flex flex-col justify-between p-12 bg-white dark:bg-slate-950 transition-colors duration-300">
         <div>
-          <Link to="/" className="text-blue-700 font-bold text-xl">
+          <Link to="/" className="text-blue-700 dark:text-blue-400 font-bold text-xl">
             LuxeRetail
           </Link>
         </div>
 
         <div className="max-w-md w-full mx-auto">
-          <h1 className="text-3xl font-bold text-blue-700 mb-2">
+          <h1 className="text-3xl font-bold text-blue-700 dark:text-blue-400 mb-2">
             Welcome Back
           </h1>
-          <p className="text-gray-500 text-sm mb-8">
+          <p className="text-gray-500 dark:text-slate-400 text-sm mb-8">
             Please enter your credentials to access your account.
           </p>
 
           <form onSubmit={formik.handleSubmit} className="space-y-4">
             {apiError && (
-              <p className="text-red-500 text-sm bg-red-50 rounded-lg px-4 py-3">
+              <p className="text-red-500 text-sm bg-red-50 dark:bg-red-950/30 dark:text-red-400 rounded-lg px-4 py-3 border border-red-100 dark:border-red-900/50">
                 {apiError}
               </p>
             )}
@@ -89,7 +90,7 @@ const Login = () => {
                 value={formik.values.email}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                className="w-full bg-gray-100 rounded-lg px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-700"
+                className="w-full bg-gray-100 dark:bg-slate-800 text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500 rounded-lg px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-700 dark:focus:ring-blue-500 transition-colors"
               />
               {formik.touched.email && formik.errors.email && (
                 <p className="text-red-500 text-xs mt-1">
@@ -108,12 +109,12 @@ const Login = () => {
                   value={formik.values.password}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  className="w-full bg-gray-100 rounded-lg px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-700"
+                  className="w-full bg-gray-100 dark:bg-slate-800 text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500 rounded-lg px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-700 dark:focus:ring-blue-500 transition-colors"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-500 hover:text-gray-600 dark:hover:text-slate-300 transition-colors"
                 >
                   {showPassword ? (
                     <EyeOff className="w-4 h-4" />
@@ -133,7 +134,7 @@ const Login = () => {
             <div className="text-right">
               <Link
                 to="/"
-                className="text-xs font-semibold text-blue-700 uppercase tracking-widest"
+                className="text-xs font-semibold text-blue-700 dark:text-blue-400 uppercase tracking-widest hover:underline"
               >
                 Forgot Password?
               </Link>
@@ -143,45 +144,45 @@ const Login = () => {
             <button
               type="submit"
               disabled={formik.isSubmitting}
-              className="w-full bg-blue-700 text-white py-3 rounded-lg text-sm font-semibold hover:bg-blue-800 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+              className="w-full bg-blue-700 dark:bg-blue-600 text-white py-3 rounded-lg text-sm font-semibold hover:bg-blue-800 dark:hover:bg-blue-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
             >
               {formik.isSubmitting ? "Signing in..." : "Sign In →"}
             </button>
 
             {/* Divider */}
             <div className="flex items-center gap-4">
-              <div className="flex-1 h-px bg-gray-200" />
-              <span className="text-xs text-gray-400">OR</span>
-              <div className="flex-1 h-px bg-gray-200" />
+              <div className="flex-1 h-px bg-gray-200 dark:bg-slate-700" />
+              <span className="text-xs text-gray-400 dark:text-slate-500">OR</span>
+              <div className="flex-1 h-px bg-gray-200 dark:bg-slate-700" />
             </div>
 
             {/* Social */}
             <div className="grid grid-cols-2 gap-3">
               <button
                 type="button"
-                className="flex items-center justify-center gap-2 border border-gray-200 rounded-lg py-3 text-sm hover:bg-gray-50 transition-colors"
+                className="flex items-center justify-center gap-2 border border-gray-200 dark:border-slate-700 rounded-lg py-3 text-sm text-gray-700 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors"
               >
                 Google
               </button>
               <button
                 type="button"
-                className="flex items-center justify-center gap-2 border border-gray-200 rounded-lg py-3 text-sm hover:bg-gray-50 transition-colors"
+                className="flex items-center justify-center gap-2 border border-gray-200 dark:border-slate-700 rounded-lg py-3 text-sm text-gray-700 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors"
               >
                 Apple
               </button>
             </div>
 
             {/* Register Link */}
-            <p className="text-center text-sm text-gray-500">
+            <p className="text-center text-sm text-gray-500 dark:text-slate-400">
               Don't have an account?{" "}
-              <Link to="/register" className="text-blue-700 font-semibold">
+              <Link to="/register" className="text-blue-700 dark:text-blue-400 font-semibold hover:underline">
                 Register Now
               </Link>
             </p>
           </form>
         </div>
 
-        <p className="text-xs text-gray-400 text-center">
+        <p className="text-xs text-gray-400 dark:text-slate-600 text-center">
           © 2026 LuxeRetail. All rights reserved.
         </p>
       </div>

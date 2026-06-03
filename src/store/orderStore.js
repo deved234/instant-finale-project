@@ -3,7 +3,8 @@ import { persist } from "zustand/middleware";
 
 const useOrderStore = create(
   persist(
-    (set) => ({
+    (set, get) => ({
+      orders: [],
       currentOrder: null,
 
       createOrder: ({ items, subtotal, shipping, tax, total }) => {
@@ -11,16 +12,20 @@ const useOrderStore = create(
           Math.random() * 9000000 + 1000000,
         )}`;
 
+        const newOrder = {
+          orderNumber,
+          createdAt: new Date().toISOString(),
+          items: items.map((item) => ({ ...item })),
+          subtotal,
+          shipping,
+          tax,
+          total,
+          status: "Processing",
+        };
+
         set({
-          currentOrder: {
-            orderNumber,
-            createdAt: new Date().toISOString(),
-            items: items.map((item) => ({ ...item })),
-            subtotal,
-            shipping,
-            tax,
-            total,
-          },
+          currentOrder: newOrder,
+          orders: [newOrder, ...get().orders],
         });
       },
 
@@ -33,3 +38,4 @@ const useOrderStore = create(
 );
 
 export default useOrderStore;
+

@@ -68,7 +68,7 @@ const Register = () => {
   });
 
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen flex bg-white dark:bg-slate-950 transition-colors duration-300">
       {/* Left Side */}
       <div className="hidden md:flex w-1/2 bg-linear-to-br from-slate-600 via-blue-900 to-purple-900 flex-col justify-end p-12">
         <h2 className="text-white text-4xl font-bold leading-tight mb-4">
@@ -82,31 +82,31 @@ const Register = () => {
       </div>
 
       {/* Right Side */}
-      <div className="w-full md:w-1/2 flex flex-col justify-between p-12">
+      <div className="w-full md:w-1/2 flex flex-col justify-between p-12 bg-white dark:bg-slate-950 transition-colors duration-300">
         <div>
-          <Link to="/" className="text-blue-700 font-bold text-xl">
+          <Link to="/" className="text-blue-700 dark:text-blue-400 font-bold text-xl">
             LuxeRetail
           </Link>
         </div>
 
         <div className="max-w-md w-full mx-auto">
-          <h1 className="text-3xl font-bold text-blue-700 mb-2">
+          <h1 className="text-3xl font-bold text-blue-700 dark:text-blue-400 mb-2">
             Create Account
           </h1>
-          <p className="text-gray-500 text-sm mb-8">
+          <p className="text-gray-500 dark:text-slate-400 text-sm mb-8">
             Start your journey with LuxeRetail today.
           </p>
 
           <form onSubmit={formik.handleSubmit} className="space-y-4">
             {apiError && (
-              <p className="text-red-500 text-sm bg-red-50 rounded-lg px-4 py-3">
+              <p className="text-red-500 text-sm bg-red-50 dark:bg-red-950/30 dark:text-red-400 rounded-lg px-4 py-3 border border-red-100 dark:border-red-900/50">
                 {apiError}
               </p>
             )}
 
             {/* Name */}
             <div>
-              <label className="text-xs font-semibold uppercase tracking-widest text-gray-600 mb-1 block">
+              <label className="text-xs font-semibold uppercase tracking-widest text-gray-600 dark:text-slate-400 mb-1 block">
                 Full Name
               </label>
               <input
@@ -116,7 +116,7 @@ const Register = () => {
                 value={formik.values.name}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                className="w-full bg-gray-100 rounded-lg px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-700"
+                className="w-full bg-gray-100 dark:bg-slate-800 text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500 rounded-lg px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-700 dark:focus:ring-blue-500 transition-colors"
               />
               {formik.touched.name && formik.errors.name && (
                 <p className="text-red-500 text-xs mt-1">
@@ -127,7 +127,7 @@ const Register = () => {
 
             {/* Email */}
             <div>
-              <label className="text-xs font-semibold uppercase tracking-widest text-gray-600 mb-1 block">
+              <label className="text-xs font-semibold uppercase tracking-widest text-gray-600 dark:text-slate-400 mb-1 block">
                 Email Address
               </label>
               <input
@@ -137,7 +137,7 @@ const Register = () => {
                 value={formik.values.email}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                className="w-full bg-gray-100 rounded-lg px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-700"
+                className="w-full bg-gray-100 dark:bg-slate-800 text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500 rounded-lg px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-700 dark:focus:ring-blue-500 transition-colors"
               />
               {formik.touched.email && formik.errors.email && (
                 <p className="text-red-500 text-xs mt-1">
@@ -149,7 +149,7 @@ const Register = () => {
             {/* Password + Confirm */}
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-xs font-semibold uppercase tracking-widest text-gray-600 mb-1 block">
+                <label className="text-xs font-semibold uppercase tracking-widest text-gray-600 dark:text-slate-400 mb-1 block">
                   Password
                 </label>
                 <input
@@ -159,7 +159,7 @@ const Register = () => {
                   value={formik.values.password}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  className="w-full bg-gray-100 rounded-lg px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-700"
+                  className="w-full bg-gray-100 dark:bg-slate-800 text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500 rounded-lg px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-700 dark:focus:ring-blue-500 transition-colors"
                 />
                 {formik.touched.password && formik.errors.password && (
                   <p className="text-red-500 text-xs mt-1">
@@ -168,7 +168,7 @@ const Register = () => {
                 )}
               </div>
               <div>
-                <label className="text-xs font-semibold uppercase tracking-widest text-gray-600 mb-1 block">
+                <label className="text-xs font-semibold uppercase tracking-widest text-gray-600 dark:text-slate-400 mb-1 block">
                   Confirm
                 </label>
                 <input
@@ -178,7 +178,7 @@ const Register = () => {
                   value={formik.values.confirmPassword}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  className="w-full bg-gray-100 rounded-lg px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-700"
+                  className="w-full bg-gray-100 dark:bg-slate-800 text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500 rounded-lg px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-700 dark:focus:ring-blue-500 transition-colors"
                 />
                 {formik.touched.confirmPassword &&
                   formik.errors.confirmPassword && (
@@ -202,13 +202,13 @@ const Register = () => {
                   }
                   className="mt-1 accent-blue-700"
                 />
-                <label htmlFor="terms" className="text-sm text-gray-500">
+                <label htmlFor="terms" className="text-sm text-gray-500 dark:text-slate-400">
                   I agree to the{" "}
-                  <Link to="/" className="text-blue-700">
+                  <Link to="/" className="text-blue-700 dark:text-blue-400 hover:underline">
                     Terms of Service
                   </Link>{" "}
                   and{" "}
-                  <Link to="/" className="text-blue-700">
+                  <Link to="/" className="text-blue-700 dark:text-blue-400 hover:underline">
                     Privacy Policy
                   </Link>
                   .
@@ -225,22 +225,22 @@ const Register = () => {
             <button
               type="submit"
               disabled={formik.isSubmitting}
-              className="w-full bg-blue-700 text-white py-3 rounded-lg text-sm font-semibold hover:bg-blue-800 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+              className="w-full bg-blue-700 dark:bg-blue-600 text-white py-3 rounded-lg text-sm font-semibold hover:bg-blue-800 dark:hover:bg-blue-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
             >
               {formik.isSubmitting ? "Creating account..." : "Register"}
             </button>
 
             {/* Login Link */}
-            <p className="text-center text-sm text-gray-500">
+            <p className="text-center text-sm text-gray-500 dark:text-slate-400">
               Already have an account?{" "}
-              <Link to="/login" className="text-blue-700 font-semibold">
+              <Link to="/login" className="text-blue-700 dark:text-blue-400 font-semibold hover:underline">
                 Sign In
               </Link>
             </p>
           </form>
         </div>
 
-        <p className="text-xs text-gray-400 text-center">
+        <p className="text-xs text-gray-400 dark:text-slate-600 text-center">
           © 2026 LuxeRetail. All rights reserved.
         </p>
       </div>

@@ -4,7 +4,6 @@ import {
   ArrowRight,
   ChevronLeft,
   ChevronRight,
-  Mail,
   Sparkles,
 } from "lucide-react";
 import ProductCard from "../../components/ui/ProductCard";
@@ -77,18 +76,18 @@ const Home = () => {
   };
 
   return (
-    <div>
+    <div className="bg-white dark:bg-slate-950 transition-colors duration-300">
       {/* Hero */}
-      <section className="relative bg-gradient-to-br from-slate-100 to-blue-50 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-slate-100 to-blue-50 dark:from-slate-900 dark:to-slate-950 overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 py-20 flex flex-col md:flex-row items-center gap-12">
           <div className="flex-1">
-            <p className="text-xs font-semibold uppercase tracking-widest text-blue-700 mb-4">
+            <p className="text-xs font-semibold uppercase tracking-widest text-blue-700 dark:text-blue-400 mb-4">
               New Season 2024 Collection
             </p>
-            <h1 className="text-5xl font-bold text-gray-900 leading-tight mb-6">
+            <h1 className="text-5xl font-bold text-gray-900 dark:text-slate-50 leading-tight mb-6">
               Elevate Your Everyday Essentials
             </h1>
-            <p className="text-gray-500 text-sm leading-relaxed mb-8 max-w-md">
+            <p className="text-gray-500 dark:text-slate-400 text-sm leading-relaxed mb-8 max-w-md">
               Discover a curated collection of premium apparel designed for the
               modern visionary who values timeless craftsmanship.
             </p>
@@ -101,7 +100,7 @@ const Home = () => {
               </Link>
               <Link
                 to="/categories"
-                className="text-sm font-semibold text-gray-700 hover:text-gray-900 flex items-center gap-1"
+                className="text-sm font-semibold text-gray-700 dark:text-slate-300 hover:text-gray-900 dark:hover:text-slate-100 flex items-center gap-1 transition-colors"
               >
                 View Lookbook <ArrowRight className="w-4 h-4" />
               </Link>
@@ -110,7 +109,7 @@ const Home = () => {
           <div className="flex-1 w-full flex justify-center">
             <div className="relative w-full max-w-md">
               <div
-                className={`relative h-[430px] overflow-hidden rounded-2xl bg-gradient-to-br ${currentSlide.accent} shadow-2xl shadow-slate-300/70`}
+                className={`relative h-[430px] overflow-hidden rounded-2xl bg-gradient-to-br ${currentSlide.accent} shadow-2xl shadow-slate-300/70 dark:shadow-black/50`}
               >
                 <img
                   src={currentSlide.image}
@@ -138,7 +137,6 @@ const Home = () => {
                         {currentSlide.price}
                       </p>
                     </div>
-                    
                   </div>
                 </div>
 
@@ -160,11 +158,11 @@ const Home = () => {
                 </div>
               </div>
 
-              <div className="absolute -bottom-6 left-6 right-6 bg-white rounded-xl shadow-xl shadow-slate-300/50 border border-white/70 px-5 py-4">
+              <div className="absolute -bottom-6 left-6 right-6 bg-white dark:bg-slate-800 rounded-xl shadow-xl shadow-slate-300/50 dark:shadow-black/40 border border-white/70 dark:border-slate-700 px-5 py-4">
                 <div className="flex items-center justify-between gap-4">
                   <div>
-                    <p className="text-xs text-gray-400 mb-1">Member benefit</p>
-                    <p className="text-sm font-bold text-gray-900">
+                    <p className="text-xs text-gray-400 dark:text-slate-500 mb-1">Member benefit</p>
+                    <p className="text-sm font-bold text-gray-900 dark:text-slate-100">
                       Free premium delivery over $150
                     </p>
                   </div>
@@ -177,7 +175,7 @@ const Home = () => {
                         className={`h-2 rounded-full transition-all ${
                           activeSlide === index
                             ? "w-8 bg-blue-700"
-                            : "w-2 bg-gray-300"
+                            : "w-2 bg-gray-300 dark:bg-slate-600"
                         }`}
                       />
                     ))}
@@ -190,12 +188,12 @@ const Home = () => {
       </section>
 
       {/* Categories */}
-      <section className="max-w-7xl mx-auto px-6 py-12">
+      <section className="max-w-7xl mx-auto px-6 py-12 mt-6">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-bold text-gray-900">Browse Categories</h2>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-slate-50">Browse Categories</h2>
           <Link
             to="/categories"
-            className="text-sm text-blue-700 flex items-center gap-1"
+            className="text-sm text-blue-700 dark:text-blue-400 flex items-center gap-1 hover:underline"
           >
             View All <ArrowRight className="w-4 h-4" />
           </Link>
@@ -208,7 +206,7 @@ const Home = () => {
               className={`px-4 py-2 rounded-full text-sm font-medium transition-colors capitalize ${
                 activeCategory === cat
                   ? "bg-blue-700 text-white"
-                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                  : "bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-300 hover:bg-gray-200 dark:hover:bg-slate-700"
               }`}
             >
               {cat}
@@ -219,8 +217,8 @@ const Home = () => {
 
       {/* Products */}
       <section className="max-w-7xl mx-auto px-6 pb-16">
-        <h2 className="text-xl font-bold text-gray-900 mb-2">Our Products</h2>
-        <p className="text-sm text-gray-500 mb-8">
+        <h2 className="text-xl font-bold text-gray-900 dark:text-slate-50 mb-2">Our Products</h2>
+        <p className="text-sm text-gray-500 dark:text-slate-400 mb-8">
           Quality meets craftsmanship in every hand-selected piece.
         </p>
 
@@ -228,9 +226,9 @@ const Home = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[...Array(8)].map((_, i) => (
               <div key={i} className="animate-pulse">
-                <div className="bg-gray-200 rounded-xl aspect-square mb-3" />
-                <div className="bg-gray-200 h-4 rounded mb-2" />
-                <div className="bg-gray-200 h-3 rounded w-1/2" />
+                <div className="bg-gray-200 dark:bg-slate-800 rounded-xl aspect-square mb-3" />
+                <div className="bg-gray-200 dark:bg-slate-800 h-4 rounded mb-2" />
+                <div className="bg-gray-200 dark:bg-slate-800 h-3 rounded w-1/2" />
               </div>
             ))}
           </div>
@@ -253,7 +251,7 @@ const Home = () => {
         <div className="flex justify-center mt-10">
           <Link
             to="/shop"
-            className="border border-gray-300 text-gray-700 px-8 py-3 rounded-lg text-sm font-semibold hover:bg-gray-50 transition-colors"
+            className="border border-gray-300 dark:border-slate-700 text-gray-700 dark:text-slate-300 px-8 py-3 rounded-lg text-sm font-semibold hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors"
           >
             Discover More Products
           </Link>
@@ -261,15 +259,15 @@ const Home = () => {
       </section>
 
       {/* Newsletter */}
-      <section className="bg-blue-50 py-16">
+      <section className="bg-blue-50 dark:bg-slate-900 py-16 transition-colors duration-300">
         <div className="max-w-lg mx-auto px-6 text-center">
-          <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <div className="w-10 h-10 bg-blue-100 dark:bg-blue-950/50 rounded-full flex items-center justify-center mx-auto mb-4">
             ✉️
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-3">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-slate-50 mb-3">
             Join the Luxe List
           </h2>
-          <p className="text-sm text-gray-500 mb-6">
+          <p className="text-sm text-gray-500 dark:text-slate-400 mb-6">
             Subscribe to receive exclusive early access to new collections,
             personalized style recommendations, and premium member-only
             invitations.
@@ -278,13 +276,13 @@ const Home = () => {
             <input
               type="email"
               placeholder="Enter your email address"
-              className="flex-1 bg-white border border-gray-200 rounded-lg px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-700"
+              className="flex-1 bg-white dark:bg-slate-800 text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500 border border-gray-200 dark:border-slate-700 rounded-lg px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-700 dark:focus:ring-blue-500 transition-colors"
             />
-            <button className="bg-blue-700 text-white px-6 py-3 rounded-lg text-sm font-semibold hover:bg-blue-800 transition-colors">
+            <button className="bg-blue-700 text-white px-6 py-3 rounded-lg text-sm font-semibold hover:bg-blue-800 transition-colors whitespace-nowrap">
               Subscribe Now
             </button>
           </div>
-          <p className="text-xs text-gray-400 mt-3">
+          <p className="text-xs text-gray-400 dark:text-slate-500 mt-3">
             By subscribing, you agree to our Privacy Policy and Terms of
             Service.
           </p>

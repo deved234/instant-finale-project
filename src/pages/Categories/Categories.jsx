@@ -23,17 +23,16 @@ const categoryDescriptions = {
 const Categories = () => {
   const { data: products, isLoading, isError } = useProducts();
 
-  // استخرج الكاتيجوريز الـ unique من المنتجات
   const categories = products
     ? [...new Set(products.map((p) => p.category))]
     : [];
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-12">
+    <div className="max-w-7xl mx-auto px-6 py-12 bg-white dark:bg-slate-950 min-h-screen transition-colors duration-300">
       {/* Header */}
       <div className="mb-12">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Categories</h1>
-        <p className="text-sm text-gray-500">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-slate-50 mb-2">Categories</h1>
+        <p className="text-sm text-gray-500 dark:text-slate-400">
           Explore our curated collections by category
         </p>
       </div>
@@ -43,7 +42,7 @@ const Categories = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {[...Array(4)].map((_, i) => (
             <div key={i} className="animate-pulse">
-              <div className="bg-gray-200 rounded-2xl h-64" />
+              <div className="bg-gray-200 dark:bg-slate-800 rounded-2xl h-64" />
             </div>
           ))}
         </div>

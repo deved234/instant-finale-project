@@ -13,6 +13,11 @@ const useAuthStore = create(
                     isAuthenticated: true,
                 }),
 
+            updateUser: (userData) =>
+                set((state) => ({
+                    user: state.user ? { ...state.user, ...userData } : null,
+                })),
+
             logout: () =>
                 set({
                     user: null,
@@ -24,5 +29,6 @@ const useAuthStore = create(
         }
     )
 )
+
 
 export default useAuthStore

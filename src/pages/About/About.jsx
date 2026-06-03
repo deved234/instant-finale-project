@@ -1,16 +1,17 @@
 import { Link } from "react-router-dom";
+
 const About = () => {
   return (
-    <div>
+    <div className="bg-white dark:bg-slate-950 transition-colors duration-300">
       {/* Hero */}
-      <section className="bg-gradient-to-br from-slate-100 to-blue-50 py-24 text-center">
-        <p className="text-xs font-semibold uppercase tracking-widest text-blue-700 mb-4">
+      <section className="bg-gradient-to-br from-slate-100 to-blue-50 dark:from-slate-900 dark:to-slate-950 py-24 text-center">
+        <p className="text-xs font-semibold uppercase tracking-widest text-blue-700 dark:text-blue-400 mb-4">
           Our Story
         </p>
-        <h1 className="text-5xl font-bold text-gray-900 mb-6 max-w-2xl mx-auto leading-tight">
+        <h1 className="text-5xl font-bold text-gray-900 dark:text-slate-50 mb-6 max-w-2xl mx-auto leading-tight">
           Curating the World's Most Exceptional Everyday Essentials
         </h1>
-        <p className="text-gray-500 text-sm max-w-md mx-auto leading-relaxed">
+        <p className="text-gray-500 dark:text-slate-400 text-sm max-w-md mx-auto leading-relaxed">
           A focus on minimalist luxury, timeless craftsmanship, and modern
           elegance since 2024.
         </p>
@@ -20,25 +21,25 @@ const About = () => {
       <section className="max-w-7xl mx-auto px-6 py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-widest text-blue-700 mb-4">
+            <p className="text-xs font-semibold uppercase tracking-widest text-blue-700 dark:text-blue-400 mb-4">
               Our Mission
             </p>
-            <h2 className="text-3xl font-bold text-gray-900 mb-6 leading-tight">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-slate-50 mb-6 leading-tight">
               Redefining Modern Elegance
             </h2>
-            <p className="text-sm text-gray-500 leading-relaxed mb-4">
+            <p className="text-sm text-gray-500 dark:text-slate-400 leading-relaxed mb-4">
               At LuxeRetail, we believe that everyday objects should inspire.
               Every product in our collection is hand-selected by our team of
               curators who share a passion for exceptional design and quality
               craftsmanship.
             </p>
-            <p className="text-sm text-gray-500 leading-relaxed">
+            <p className="text-sm text-gray-500 dark:text-slate-400 leading-relaxed">
               We partner with artisans and brands who share our commitment to
               sustainability, ethical production, and timeless aesthetics that
               transcend seasonal trends.
             </p>
           </div>
-          <div className="bg-gray-100 rounded-2xl h-80" />
+          <div className="bg-gray-100 dark:bg-slate-800 rounded-2xl h-80" />
         </div>
       </section>
 
@@ -66,10 +67,10 @@ const About = () => {
       {/* Values */}
       <section className="max-w-7xl mx-auto px-6 py-20">
         <div className="text-center mb-12">
-          <p className="text-xs font-semibold uppercase tracking-widest text-blue-700 mb-4">
+          <p className="text-xs font-semibold uppercase tracking-widest text-blue-700 dark:text-blue-400 mb-4">
             What We Stand For
           </p>
-          <h2 className="text-3xl font-bold text-gray-900">Our Values</h2>
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-slate-50">Our Values</h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {[
@@ -94,15 +95,15 @@ const About = () => {
           ].map((value) => (
             <div
               key={value.title}
-              className="bg-gray-50 rounded-2xl p-8 text-center hover:shadow-md transition-shadow"
+              className="bg-gray-50 dark:bg-slate-800/60 rounded-2xl p-8 text-center hover:shadow-md dark:hover:shadow-black/30 transition-shadow border border-transparent dark:border-slate-700/50"
             >
-              <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 text-blue-700 text-xl">
+              <div className="w-12 h-12 bg-blue-100 dark:bg-blue-950/50 rounded-full flex items-center justify-center mx-auto mb-4 text-blue-700 dark:text-blue-400 text-xl">
                 {value.icon}
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-3">
+              <h3 className="text-lg font-bold text-gray-900 dark:text-slate-100 mb-3">
                 {value.title}
               </h3>
-              <p className="text-sm text-gray-500 leading-relaxed">
+              <p className="text-sm text-gray-500 dark:text-slate-400 leading-relaxed">
                 {value.description}
               </p>
             </div>
@@ -111,13 +112,13 @@ const About = () => {
       </section>
 
       {/* Team */}
-      <section className="bg-gray-50 py-20">
+      <section className="bg-gray-50 dark:bg-slate-900 py-20 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-12">
-            <p className="text-xs font-semibold uppercase tracking-widest text-blue-700 mb-4">
+            <p className="text-xs font-semibold uppercase tracking-widest text-blue-700 dark:text-blue-400 mb-4">
               The People Behind LuxeRetail
             </p>
-            <h2 className="text-3xl font-bold text-gray-900">Meet Our Team</h2>
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-slate-50">Meet Our Team</h2>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
@@ -127,11 +128,11 @@ const About = () => {
               { name: "Marcus Webb", role: "Brand Partnerships" },
             ].map((member) => (
               <div key={member.name} className="text-center">
-                <div className="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-4" />
-                <h3 className="text-sm font-bold text-gray-900">
+                <div className="w-24 h-24 bg-gray-200 dark:bg-slate-700 rounded-full mx-auto mb-4" />
+                <h3 className="text-sm font-bold text-gray-900 dark:text-slate-100">
                   {member.name}
                 </h3>
-                <p className="text-xs text-gray-400">{member.role}</p>
+                <p className="text-xs text-gray-400 dark:text-slate-500">{member.role}</p>
               </div>
             ))}
           </div>
@@ -140,10 +141,10 @@ const About = () => {
 
       {/* CTA */}
       <section className="max-w-7xl mx-auto px-6 py-20 text-center">
-        <h2 className="text-3xl font-bold text-gray-900 mb-4">
+        <h2 className="text-3xl font-bold text-gray-900 dark:text-slate-50 mb-4">
           Ready to Elevate Your Lifestyle?
         </h2>
-        <p className="text-gray-500 text-sm mb-8 max-w-md mx-auto">
+        <p className="text-gray-500 dark:text-slate-400 text-sm mb-8 max-w-md mx-auto">
           Join thousands of curators who have discovered the art of refined
           living with LuxeRetail.
         </p>
@@ -156,7 +157,7 @@ const About = () => {
           </Link>
           <Link
             to="/register"
-            className="border border-gray-300 text-gray-700 px-8 py-3 rounded-lg text-sm font-semibold hover:bg-gray-50 transition-colors"
+            className="border border-gray-300 dark:border-slate-600 text-gray-700 dark:text-slate-300 px-8 py-3 rounded-lg text-sm font-semibold hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors"
           >
             Join Us
           </Link>

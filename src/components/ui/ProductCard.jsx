@@ -17,7 +17,7 @@ const ProductCard = ({ product }) => {
   return (
     <div className="group relative">
       {/* Image */}
-      <div className="relative overflow-hidden rounded-xl bg-gray-100 aspect-square mb-3">
+      <div className="relative overflow-hidden rounded-xl bg-gray-100 dark:bg-slate-800 aspect-square mb-3">
         <Link to={`/product/${product.id}`} className="block w-full h-full">
           <img
             src={product.image}
@@ -31,10 +31,10 @@ const ProductCard = ({ product }) => {
           onClick={() =>
             wished ? removeFromWishlist(product.id) : addToWishlist(product)
           }
-          className="absolute top-3 right-3 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm hover:scale-110 transition-transform"
+          className="absolute top-3 right-3 w-8 h-8 bg-white dark:bg-slate-700 rounded-full flex items-center justify-center shadow-sm hover:scale-110 transition-transform"
         >
           <Heart
-            className={`w-4 h-4 ${wished ? "fill-red-500 text-red-500" : "text-gray-400"}`}
+            className={`w-4 h-4 ${wished ? "fill-red-500 text-red-500" : "text-gray-400 dark:text-slate-400"}`}
           />
         </button>
 
@@ -56,16 +56,16 @@ const ProductCard = ({ product }) => {
 
       {/* Info */}
       <Link to={`/product/${product.id}`}>
-        <h3 className="text-sm font-medium text-gray-900 truncate">
+        <h3 className="text-sm font-medium text-gray-900 dark:text-slate-100 truncate">
           {product.title}
         </h3>
-        <p className="text-xs text-gray-400 mb-1">{product.category}</p>
+        <p className="text-xs text-gray-400 dark:text-slate-500 mb-1">{product.category}</p>
         <div className="flex items-center justify-between">
-          <span className="text-sm font-semibold text-blue-700">
+          <span className="text-sm font-semibold text-blue-700 dark:text-blue-400">
             ${product.price}
           </span>
           {product.rating && (
-            <span className="text-xs text-gray-400">⭐ {product.rating}</span>
+            <span className="text-xs text-gray-400 dark:text-slate-500">⭐ {product.rating}</span>
           )}
         </div>
       </Link>

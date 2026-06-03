@@ -11,6 +11,7 @@ import About from "../pages/About/About";
 import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
 import OrderConfirmation from "../pages/OrderConfirmation/OrderConfirmation";
+import Profile from "../pages/Profile/Profile";
 import ProtectedRoute from "./ProtectedRoute";
 
 const router = createBrowserRouter([
@@ -34,6 +35,14 @@ const router = createBrowserRouter([
         ),
       },
       {
+        path: "profile",
+        element: (
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        ),
+      },
+      {
         path: "order-confirmation",
         element: (
           <ProtectedRoute>
@@ -48,3 +57,4 @@ const router = createBrowserRouter([
 ]);
 
 export default router;
+
