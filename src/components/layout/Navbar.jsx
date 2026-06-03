@@ -32,18 +32,7 @@ const Navbar = () => {
           >
             Shop
           </Link>
-          <Link
-            to="/collections"
-            className="text-sm text-gray-600 hover:text-gray-900"
-          >
-            Collections
-          </Link>
-          <Link
-            to="/about"
-            className="text-sm text-gray-600 hover:text-gray-900"
-          >
-            About
-          </Link>
+          
         </div>
 
         {/* Icons */}
