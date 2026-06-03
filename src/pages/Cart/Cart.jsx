@@ -1,10 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Trash2, Minus, Plus, ShieldCheck, Truck, Lock } from "lucide-react";
 import useCartStore from "../../store/cartStore";
+import useOrderStore from "../../store/orderStore";
 
 const Cart = () => {
   const { items, removeItem, updateQuantity, getTotalPrice, clearCart } =
     useCartStore();
+  const createOrder = useOrderStore((state) => state.createOrder);
   const navigate = useNavigate();
 
   const subtotal = getTotalPrice();
@@ -13,6 +15,7 @@ const Cart = () => {
   const total = subtotal + shipping + tax;
 
   const handleCheckout = () => {
+    createOrder({ items, subtotal, shipping, tax, total });
     clearCart();
     navigate("/order-confirmation");
   };

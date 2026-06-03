@@ -24,7 +24,7 @@ const validationSchema = Yup.object({
 });
 
 const Register = () => {
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword] = useState(false);
   const { login } = useAuthStore();
   const navigate = useNavigate();
 

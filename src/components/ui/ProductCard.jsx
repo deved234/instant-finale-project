@@ -10,18 +10,21 @@ const ProductCard = ({ product }) => {
     removeItem: removeFromWishlist,
     items: wishlistItems,
   } = useWishlistStore();
-const wished = wishlistItems.some(
-  (item) => String(item.id) === String(product.id),
-);
+  const wished = wishlistItems.some(
+    (item) => String(item.id) === String(product.id),
+  );
+
   return (
     <div className="group relative">
       {/* Image */}
       <div className="relative overflow-hidden rounded-xl bg-gray-100 aspect-square mb-3">
-        <img
-          src={product.image}
-          alt={product.title}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-        />
+        <Link to={`/product/${product.id}`} className="block w-full h-full">
+          <img
+            src={product.image}
+            alt={product.title}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+        </Link>
 
         {/* Wishlist */}
         <button
