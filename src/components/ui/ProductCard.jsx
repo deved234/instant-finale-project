@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Heart } from "lucide-react";
 import useCartStore from "../../store/cartStore";
 import useWishlistStore from "../../store/wishlistStore";
+import useToastStore from "../../store/toastStore";
 
 const ProductCard = ({ product }) => {
   const addItem = useCartStore((state) => state.addItem);
@@ -10,9 +11,25 @@ const ProductCard = ({ product }) => {
     removeItem: removeFromWishlist,
     items: wishlistItems,
   } = useWishlistStore();
+  const showToast = useToastStore((state) => state.showToast);
   const wished = wishlistItems.some(
     (item) => String(item.id) === String(product.id),
   );
+
+  const toggleWishlist = () => {
+    if (wished) {
+      removeFromWishlist(product.id);
+      showToast("Removed from wishlist", "info");
+    } else {
+      addToWishlist(product);
+      showToast("Saved to wishlist");
+    }
+  };
+
+  const handleAddToCart = () => {
+    addItem(product);
+    showToast("Added to your bag");
+  };
 
   return (
     <div className="group relative">
@@ -28,9 +45,7 @@ const ProductCard = ({ product }) => {
 
         {/* Wishlist */}
         <button
-          onClick={() =>
-            wished ? removeFromWishlist(product.id) : addToWishlist(product)
-          }
+          onClick={toggleWishlist}
           className="absolute top-3 right-3 w-8 h-8 bg-white dark:bg-slate-700 rounded-full flex items-center justify-center shadow-sm hover:scale-110 transition-transform"
         >
           <Heart
@@ -47,7 +62,7 @@ const ProductCard = ({ product }) => {
 
         {/* Quick Add */}
         <button
-          onClick={() => addItem(product)}
+          onClick={handleAddToCart}
           className="absolute bottom-0 left-0 right-0 bg-blue-700 text-white text-sm py-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300"
         >
           Add to Cart

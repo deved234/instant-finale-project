@@ -4,6 +4,10 @@ import { Trash2, Minus, Plus, ShieldCheck, Truck, Lock, ArrowLeft, ArrowRight, C
 import useCartStore from "../../store/cartStore";
 import useOrderStore from "../../store/orderStore";
 import useAuthStore from "../../store/authStore";
+import useToastStore from "../../store/toastStore";
+import { syncUserToApi } from "../../api/users";
+import { appendOrderForUser } from "../../api/orders";
+import { PROMO_FOOTNOTE, PROMO_PLACEHOLDER } from "../../constants/promo";
 
 const Cart = () => {
   const { 
@@ -19,7 +23,9 @@ const Cart = () => {
   } = useCartStore();
   
   const createOrder = useOrderStore((state) => state.createOrder);
-  const { user } = useAuthStore();
+  const replaceOrders = useOrderStore((state) => state.replaceOrders);
+  const { user, updateUser } = useAuthStore();
+  const showToast = useToastStore((state) => state.showToast);
   const navigate = useNavigate();
 
   // Step 0: Review, Step 1: Shipping, Step 2: Payment, Step 3: Confirmation
@@ -63,18 +69,21 @@ const Cart = () => {
     if (res.success) {
       setPromoMessage({ type: "success", text: res.message });
       setPromoInput("");
+      showToast(res.message);
     } else {
       setPromoMessage({ type: "error", text: res.message });
+      showToast(res.message, "error");
     }
   };
 
   const handleRemovePromo = () => {
     clearPromoCode();
     setPromoMessage({ type: "", text: "" });
+    showToast("Promo code removed", "info");
   };
 
   // Shipping Form Validation
-  const handleShippingSubmit = (e) => {
+  const handleShippingSubmit = async (e) => {
     e.preventDefault();
     const errors = {};
     if (!shippingName.trim()) errors.name = "Full name is required";
@@ -88,7 +97,36 @@ const Cart = () => {
       return;
     }
 
+    const address = {
+      street: shippingStreet.trim(),
+      city: shippingCity.trim(),
+      zipCode: shippingZip.trim(),
+      country: shippingCountry.trim(),
+    };
+
     setShippingErrors({});
+
+    try {
+      updateUser({ name: shippingName.trim(), address });
+
+      const result = await syncUserToApi(user, {
+        name: shippingName.trim(),
+        address,
+      });
+
+      if (result.user) {
+        updateUser(result.user);
+      }
+
+      showToast(
+        result.localOnly
+          ? "Shipping details saved."
+          : "Shipping details saved to your account.",
+      );
+    } catch {
+      showToast("Could not sync shipping to server. Continuing checkout.", "error");
+    }
+
     setStep(2);
   };
 
@@ -136,8 +174,35 @@ const Cart = () => {
   };
 
   // Final Order placement
-  const handlePlaceOrder = () => {
-    createOrder({ items, subtotal: finalSubtotal, shipping, tax, total });
+  const handlePlaceOrder = async () => {
+    const shippingAddress = {
+      name: shippingName.trim(),
+      street: shippingStreet.trim(),
+      city: shippingCity.trim(),
+      zipCode: shippingZip.trim(),
+      country: shippingCountry.trim(),
+    };
+
+    const newOrder = createOrder({
+      items,
+      subtotal: finalSubtotal,
+      shipping,
+      tax,
+      total,
+      shippingAddress,
+    });
+
+    try {
+      const apiOrders = await appendOrderForUser(user, newOrder);
+      replaceOrders(apiOrders);
+      showToast("Order placed and saved to your account!");
+    } catch {
+      showToast(
+        "Order placed locally. Sign in again if it does not appear in your profile.",
+        "error",
+      );
+    }
+
     clearCart();
     navigate("/order-confirmation");
   };
@@ -596,7 +661,7 @@ const Cart = () => {
                     <div className="flex gap-2">
                       <input
                         type="text"
-                        placeholder="LUXE10 or SAVE50"
+                        placeholder={PROMO_PLACEHOLDER}
                         value={promoInput}
                         onChange={(e) => setPromoInput(e.target.value)}
                         className="flex-1 bg-gray-55 dark:bg-slate-800 rounded-xl px-4 py-2.5 text-xs outline-none focus:ring-1 focus:ring-blue-700 text-gray-800 dark:text-slate-100 border-none"
@@ -615,9 +680,7 @@ const Cart = () => {
                     )}
                   </form>
                 )}
-                <p className="text-[9px] text-gray-400 mt-2">
-                  * LUXE15 (10% off), SAVE50 ($50 off for orders over $200).
-                </p>
+                <p className="text-[9px] text-gray-400 mt-2">{PROMO_FOOTNOTE}</p>
               </div>
             )}
 

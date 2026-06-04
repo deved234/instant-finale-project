@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { ShieldCheck, Truck, Minus, Plus, Star, MessageSquare } from "lucide-react";
 import useCartStore from "../../store/cartStore";
 import useAuthStore from "../../store/authStore";
+import useToastStore from "../../store/toastStore";
 import { useProduct } from "../../hooks/useProducts";
 
 const categoryGalleries = {
@@ -45,6 +46,7 @@ const Product = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const addItem = useCartStore((state) => state.addItem);
+  const showToast = useToastStore((state) => state.showToast);
   const { user, isAuthenticated } = useAuthStore();
 
   const [quantity, setQuantity] = useState(1);
@@ -91,6 +93,11 @@ const Product = () => {
     for (let i = 0; i < quantity; i++) {
       addItem(product);
     }
+    showToast(
+      quantity > 1
+        ? `Added ${quantity} items to your bag`
+        : "Added to your bag",
+    );
   };
 
   const handleZoomMouseMove = (e) => {
@@ -299,6 +306,7 @@ const Product = () => {
                 <button
                   onClick={() => {
                     for (let i = 0; i < quantity; i++) addItem(product);
+                    showToast("Added to your bag — proceeding to checkout");
                     navigate("/cart");
                   }}
                   className="flex-1 bg-blue-700 dark:bg-blue-600 text-white py-3 rounded-lg text-sm font-semibold hover:bg-blue-800 dark:hover:bg-blue-700 transition-colors"

@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import { useState } from "react";
 import useAuthStore from "../../store/authStore";
 import { registerUser, toAuthUser } from "../../api/users";
+import useToastStore from "../../store/toastStore";
 
 const validationSchema = Yup.object({
   name: Yup.string()
@@ -28,6 +29,7 @@ const Register = () => {
   const [showPassword] = useState(false);
   const [apiError, setApiError] = useState("");
   const { login } = useAuthStore();
+  const showToast = useToastStore((state) => state.showToast);
   const navigate = useNavigate();
 
   const formik = useFormik({
@@ -47,7 +49,9 @@ const Register = () => {
           email: values.email,
           password: values.password,
         });
-        login(toAuthUser(user));
+        const authUser = toAuthUser(user);
+        login(authUser);
+        showToast(`Welcome, ${authUser.name}!`);
         navigate("/");
       } catch (error) {
         if (error.message === "EMAIL_EXISTS") {

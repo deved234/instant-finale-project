@@ -1,25 +1,111 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { User, MapPin, Package, Award, Calendar, CheckCircle2, ChevronRight, Edit3 } from "lucide-react";
 import useAuthStore from "../../store/authStore";
 import useOrderStore from "../../store/orderStore";
+import useToastStore from "../../store/toastStore";
+import { syncUserToApi, fetchAuthUserByEmail } from "../../api/users";
+import { getOrdersForUser } from "../../api/orders";
 
 const Profile = () => {
   const { user, updateUser } = useAuthStore();
   const { orders } = useOrderStore();
+  const replaceOrders = useOrderStore((state) => state.replaceOrders);
+  const showToast = useToastStore((state) => state.showToast);
 
+  const [isLoadingOrders, setIsLoadingOrders] = useState(false);
   const [isEditingAddress, setIsEditingAddress] = useState(false);
+  const [isSavingAddress, setIsSavingAddress] = useState(false);
   const [street, setStreet] = useState(user?.address?.street || "1280 Boutique Avenue, Suite 402");
   const [city, setCity] = useState(user?.address?.city || "Manhattan, NY");
   const [zipCode, setZipCode] = useState(user?.address?.zipCode || "10012");
   const [country, setCountry] = useState(user?.address?.country || "United States");
 
-  const handleSaveAddress = (e) => {
+  useEffect(() => {
+    if (!user?.email) return;
+
+    const hydrateFromApi = async () => {
+      try {
+        const apiUser = await fetchAuthUserByEmail(user.email);
+        if (!apiUser) return;
+
+        const needsSync =
+          !user.id ||
+          (apiUser.address &&
+            JSON.stringify(apiUser.address) !== JSON.stringify(user.address));
+
+        if (needsSync) {
+          updateUser({ ...user, ...apiUser });
+        }
+      } catch {
+        // keep local session if API is unavailable
+      }
+    };
+
+    hydrateFromApi();
+  }, [user?.email]);
+
+  useEffect(() => {
+    if (!user?.email) return;
+
+    const loadOrders = async () => {
+      setIsLoadingOrders(true);
+      try {
+        const apiOrders = await getOrdersForUser(user);
+        if (apiOrders.length > 0) {
+          replaceOrders(apiOrders);
+        }
+      } catch {
+        // keep orders from localStorage if API fails
+      } finally {
+        setIsLoadingOrders(false);
+      }
+    };
+
+    loadOrders();
+  }, [user?.email, user?.id]);
+
+  useEffect(() => {
+    if (!user?.address) return;
+    setStreet(user.address.street || "");
+    setCity(user.address.city || "");
+    setZipCode(user.address.zipCode || "");
+    setCountry(user.address.country || "");
+  }, [user?.address]);
+
+  const handleSaveAddress = async (e) => {
     e.preventDefault();
-    updateUser({
-      address: { street, city, zipCode, country }
-    });
-    setIsEditingAddress(false);
+    const address = { street, city, zipCode, country };
+
+    setIsSavingAddress(true);
+    try {
+      updateUser({ address });
+
+      const result = await syncUserToApi(
+        { ...user, name: user?.name, email: user?.email },
+        { address },
+      );
+
+      if (result.user) {
+        updateUser(result.user);
+      }
+
+      if (result.localOnly) {
+        showToast(
+          "Could not find your account on the server. Please sign out and sign in again.",
+          "error",
+        );
+        return;
+      }
+
+      showToast("Address saved successfully.");
+      setIsEditingAddress(false);
+    } catch {
+      showToast("Could not sync address. Saved locally only.", "error");
+      setIsEditingAddress(false);
+    } finally {
+      setIsSavingAddress(false);
+    }
   };
 
   // Membership calculation
@@ -140,9 +226,10 @@ const Profile = () => {
                   <div className="flex gap-2 pt-2">
                     <button
                       type="submit"
-                      className="flex-1 bg-blue-700 dark:bg-blue-600 text-white text-xs font-semibold py-2 rounded-lg hover:bg-blue-800"
+                      disabled={isSavingAddress}
+                      className="flex-1 bg-blue-700 dark:bg-blue-600 text-white text-xs font-semibold py-2 rounded-lg hover:bg-blue-800 disabled:opacity-60"
                     >
-                      Save
+                      {isSavingAddress ? "Saving..." : "Save"}
                     </button>
                     <button
                       type="button"
@@ -188,7 +275,13 @@ const Profile = () => {
                 <h2 className="text-sm font-bold text-gray-950 dark:text-slate-100 uppercase tracking-wider">Order History</h2>
               </div>
 
-              {orders.length === 0 ? (
+              {isLoadingOrders ? (
+                <div className="text-center py-16">
+                  <p className="text-sm text-gray-400 dark:text-slate-500">
+                    Loading your orders...
+                  </p>
+                </div>
+              ) : orders.length === 0 ? (
                 <div className="text-center py-16">
                   <div className="w-12 h-12 bg-gray-55 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Package className="w-6 h-6 text-gray-300 dark:text-slate-600" />

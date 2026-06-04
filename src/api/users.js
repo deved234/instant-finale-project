@@ -49,7 +49,71 @@ export const loginUser = async ({ email, password }) => {
 };
 
 export const toAuthUser = (user) => ({
-  id: user.id,
+  id: user.id != null ? String(user.id) : undefined,
   name: user.name,
   email: user.email,
+  ...(user.address ? { address: user.address } : {}),
 });
+
+const fetchUserById = async (id) => {
+  try {
+    const { data } = await api.get(`/users/${id}`);
+    return data;
+  } catch (error) {
+    if (error.response?.status === 404) return null;
+    throw error;
+  }
+};
+
+/** Resolve MockAPI user id from session or email lookup (fixes old localStorage without id). */
+export const resolveUserId = async (user) => {
+  if (user?.id != null && user.id !== "") {
+    return String(user.id);
+  }
+  if (!user?.email) return null;
+
+  const matches = await findUsersByEmail(user.email);
+  const match = matches[0];
+  return match?.id != null ? String(match.id) : null;
+};
+
+export const updateUserProfile = async (id, updates) => {
+  const userId = String(id);
+  const current = await fetchUserById(userId);
+  if (!current) {
+    throw new Error("USER_NOT_FOUND");
+  }
+
+  const payload = {
+    name: updates.name ?? current?.name,
+    email: updates.email ?? current?.email,
+    password: current?.password,
+    ...(current?.avatar ? { avatar: current.avatar } : {}),
+    ...(updates.address !== undefined
+      ? { address: updates.address }
+      : current?.address
+        ? { address: current.address }
+        : {}),
+    ...(Array.isArray(current?.orders) ? { orders: current.orders } : {}),
+  };
+
+  const { data } = await api.put(`/users/${userId}`, payload);
+  return data;
+};
+
+export const syncUserToApi = async (user, updates) => {
+  const id = await resolveUserId(user);
+  if (!id) {
+    return { localOnly: true };
+  }
+
+  const updated = await updateUserProfile(id, updates);
+  return { user: toAuthUser({ ...updated, id }), localOnly: false };
+};
+
+/** Refresh auth session with id + address from API (call on Profile mount if needed). */
+export const fetchAuthUserByEmail = async (email) => {
+  const matches = await findUsersByEmail(email);
+  if (!matches[0]) return null;
+  return toAuthUser(matches[0]);
+};

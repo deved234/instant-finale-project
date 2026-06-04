@@ -2,10 +2,27 @@ import { Link } from "react-router-dom";
 import { Trash2, ShoppingBag } from "lucide-react";
 import useWishlistStore from "../../store/wishlistStore";
 import useCartStore from "../../store/cartStore";
+import useToastStore from "../../store/toastStore";
 
 const Wishlist = () => {
   const { items, removeItem, clearWishlist } = useWishlistStore();
   const addItem = useCartStore((state) => state.addItem);
+  const showToast = useToastStore((state) => state.showToast);
+
+  const handleAddToCart = (item) => {
+    addItem(item);
+    showToast("Added to your bag");
+  };
+
+  const handleRemove = (id) => {
+    removeItem(id);
+    showToast("Removed from wishlist", "info");
+  };
+
+  const handleClearAll = () => {
+    clearWishlist();
+    showToast("Wishlist cleared", "info");
+  };
 
   if (items.length === 0) {
     return (
@@ -40,7 +57,7 @@ const Wishlist = () => {
           </p>
         </div>
         <button
-          onClick={clearWishlist}
+          onClick={handleClearAll}
           className="text-sm text-red-400 hover:text-red-600 transition-colors"
         >
           Clear All
@@ -82,14 +99,14 @@ const Wishlist = () => {
               {/* Actions */}
               <div className="flex items-center gap-2">
                 <button
-                  onClick={() => addItem(item)}
+                  onClick={() => handleAddToCart(item)}
                   className="flex-1 flex items-center justify-center gap-2 bg-blue-700 text-white py-2 rounded-lg text-xs font-semibold hover:bg-blue-800 transition-colors"
                 >
                   <ShoppingBag className="w-3 h-3" />
                   Add to Cart
                 </button>
                 <button
-                  onClick={() => removeItem(item.id)}
+                  onClick={() => handleRemove(item.id)}
                   className="w-9 h-9 flex items-center justify-center border border-gray-200 dark:border-slate-700 rounded-lg text-gray-500 dark:text-slate-400 hover:border-red-300 hover:text-red-500 transition-colors"
                 >
                   <Trash2 className="w-4 h-4" />

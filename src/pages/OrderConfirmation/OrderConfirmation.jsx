@@ -45,6 +45,20 @@ const OrderConfirmation = () => {
       year: "numeric",
     });
 
+  const ship = currentOrder.shippingAddress;
+  const shipName = ship?.name || user?.name || "Guest User";
+  const shipLines = ship
+    ? [ship.street, `${ship.city}${ship.zipCode ? `, ${ship.zipCode}` : ""}`, ship.country].filter(
+        Boolean,
+      )
+    : user?.address
+      ? [
+          user.address.street,
+          `${user.address.city}${user.address.zipCode ? `, ${user.address.zipCode}` : ""}`,
+          user.address.country,
+        ].filter(Boolean)
+      : null;
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-slate-950 transition-colors duration-300">
       {/* Hero confirmation banner */}
@@ -162,14 +176,24 @@ const OrderConfirmation = () => {
               </p>
             </div>
             <p className="text-sm font-bold text-gray-900 dark:text-slate-100 mb-1">
-              {user?.name || "Guest User"}
+              {shipName}
             </p>
             <p className="text-sm text-gray-500 dark:text-slate-400 leading-relaxed">
-              1280 Boutique Avenue, Suite 402
-              <br />
-              Manhattan, NY 10012
-              <br />
-              United States
+              {shipLines ? (
+                shipLines.map((line) => (
+                  <span key={line} className="block">
+                    {line}
+                  </span>
+                ))
+              ) : (
+                <>
+                  1280 Boutique Avenue, Suite 402
+                  <br />
+                  Manhattan, NY 10012
+                  <br />
+                  United States
+                </>
+              )}
             </p>
           </div>
 
