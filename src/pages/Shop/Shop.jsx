@@ -80,7 +80,7 @@ const Shop = () => {
   }, [products, search, selectedCats, minPrice, maxPrice, minRating, sort]);
 
   const FilterSidebarContent = () => (
-    <div className="space-y-8">
+    <div className="space-y-2">
       {/* Search (Desktop only shows it in search bar, sidebar is additional) */}
       <div className="flex items-center justify-between">
         <h3 className="text-sm font-bold text-gray-900 dark:text-slate-100 uppercase tracking-wider">Filters</h3>

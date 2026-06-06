@@ -12,6 +12,13 @@ const Navbar = () => {
   const setCartOpen = useCartStore((state) => state.setCartOpen);
   const { isAuthenticated, logout, user } = useAuthStore();
   const navigate = useNavigate();
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // Dark/Light Theme state
   const [theme, setTheme] = useState(() => {
@@ -48,10 +55,13 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="border-b border-gray-100 dark:border-slate-800 px-6 py-4 sticky top-0 bg-white dark:bg-slate-950/80 dark:backdrop-blur-md z-50 transition-colors duration-300">
+    <nav className="border-b border-gray-100 dark:border-slate-800 px-6 py-4 sticky top-0 bg-white dark:bg-slate-950/80 dark:backdrop-blur-md z-50 transition-colors duration-300 overflow-hidden">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="text-blue-700 dark:text-blue-500 font-bold text-xl transition-colors">
+        <Link
+          to="/"
+          className="text-blue-700 dark:text-blue-500 font-bold text-xl transition-colors"
+        >
           LuxeRetail
         </Link>
 
@@ -91,7 +101,11 @@ const Navbar = () => {
             className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-slate-100 transition-colors"
             aria-label="Toggle theme"
           >
-            {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            {theme === "dark" ? (
+              <Sun className="w-5 h-5" />
+            ) : (
+              <Moon className="w-5 h-5" />
+            )}
           </button>
 
           {/* Wishlist */}
@@ -129,7 +143,9 @@ const Navbar = () => {
                 aria-label="User Profile"
               >
                 <User className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-                <span className="font-semibold max-w-[100px] truncate text-gray-700 dark:text-slate-350">{user?.name || "Profile"}</span>
+                <span className="font-semibold max-w-[100px] truncate text-gray-700 dark:text-slate-350">
+                  {user?.name || "Profile"}
+                </span>
               </Link>
               <button
                 onClick={handleLogout}
@@ -152,13 +168,17 @@ const Navbar = () => {
             aria-label="Toggle menu"
             className="md:hidden text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-slate-100 transition-colors"
           >
-            {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {menuOpen ? (
+              <X className="w-6 h-6" />
+            ) : (
+              <Menu className="w-6 h-6" />
+            )}
           </button>
         </div>
       </div>
 
       {menuOpen && (
-        <div className="md:hidden max-w-7xl mx-auto pt-5">
+        <div className="md:hidden max-w-7xl mx-auto pt-5 overflow-hidden">
           <div className="rounded-2xl border border-gray-100 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 shadow-xl shadow-slate-200/60 dark:shadow-black/40">
             <div className="grid gap-2">
               {navLinks.map((link) => (
